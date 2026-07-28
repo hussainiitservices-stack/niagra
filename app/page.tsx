@@ -312,8 +312,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white">
-        <div className="container-site py-16 md:py-24">
+      <section className="bg-white overflow-visible">
+        <div className="container-site py-16 md:py-24 overflow-visible">
           <Reveal variant="blur" className="section-accent pt-4">
             <SectionHeading
               eyebrow="Capabilities"
@@ -323,7 +323,7 @@ export default function HomePage() {
               className="mx-auto"
             />
           </Reveal>
-          <Reveal variant="scale" delayMs={120} className="mt-10 md:mt-14">
+          <Reveal variant="scale" delayMs={120} className="mt-10 md:mt-14 overflow-visible">
             <OrbitCards />
           </Reveal>
         </div>

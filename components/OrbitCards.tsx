@@ -58,42 +58,44 @@ export function OrbitCards() {
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className={`orbit-stage ${active ? "is-active" : "is-paused"}`}
-      aria-label="Niagra capabilities orbit"
-    >
-      <div className="orbit-ring" aria-hidden="true" />
-      <div className="orbit-ring orbit-ring-inner" aria-hidden="true" />
+    <div className="orbit-wrap">
+      <div
+        ref={ref}
+        className={`orbit-stage ${active ? "is-active" : "is-paused"}`}
+        aria-label="Niagra capabilities orbit"
+      >
+        <div className="orbit-ring" aria-hidden="true" />
+        <div className="orbit-ring orbit-ring-inner" aria-hidden="true" />
 
-      <div className="orbit-core">
-        <Image
-          src="/brand/logo2.png"
-          alt="Niagra"
-          width={120}
-          height={40}
-          className="h-10 w-auto"
-        />
-        <p className="mt-3 font-display text-3xl text-heading">30+</p>
-        <p className="text-xs uppercase tracking-[0.16em] text-muted">Years</p>
-      </div>
+        <div className="orbit-core">
+          <Image
+            src="/brand/logo2.png"
+            alt="Niagra"
+            width={120}
+            height={40}
+            className="h-9 w-auto md:h-10"
+          />
+          <p className="mt-2 font-display text-2xl md:text-3xl text-heading">30+</p>
+          <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted">Years</p>
+        </div>
 
-      <div className="orbit-track">
-        {ORBIT_CARDS.map((card, index) => (
-          <div
-            key={card.title}
-            className="orbit-item"
-            style={{
-              ["--i" as string]: index,
-              ["--total" as string]: ORBIT_CARDS.length,
-            }}
-          >
-            <Link href={card.href} className="orbit-card">
-              <span className="orbit-card-title">{card.title}</span>
-              <span className="orbit-card-text">{card.text}</span>
-            </Link>
-          </div>
-        ))}
+        <div className="orbit-track">
+          {ORBIT_CARDS.map((card, index) => (
+            <div
+              key={card.title}
+              className="orbit-item"
+              style={{
+                ["--i" as string]: index,
+                ["--total" as string]: ORBIT_CARDS.length,
+              }}
+            >
+              <Link href={card.href} className="orbit-card">
+                <span className="orbit-card-title">{card.title}</span>
+                <span className="orbit-card-text">{card.text}</span>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

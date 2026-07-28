@@ -834,35 +834,50 @@ img {
   }
 }
 
-/* Orbit cards */
+/* Orbit cards — stage includes card overhang so nothing clips */
+.orbit-wrap {
+  width: 100%;
+  overflow: visible;
+  padding-block: 0.5rem;
+}
+
 .orbit-stage {
-  --orbit-size: min(92vw, 520px);
-  --orbit-radius: calc(var(--orbit-size) / 2 - 0.5rem);
+  --pad: clamp(3.75rem, 12vw, 5.25rem);
+  --ring: clamp(220px, 58vw, 460px);
+  --orbit-radius: calc(var(--ring) / 2);
   position: relative;
-  width: var(--orbit-size);
-  height: var(--orbit-size);
+  width: min(100%, calc(var(--ring) + var(--pad) * 2));
+  height: calc(var(--ring) + var(--pad) * 2);
   margin-inline: auto;
-  contain: layout paint;
+  overflow: visible;
 }
 
 .orbit-ring {
   position: absolute;
-  inset: 8%;
+  top: 50%;
+  left: 50%;
+  width: var(--ring);
+  height: var(--ring);
   border: 1px solid rgba(187, 154, 101, 0.35);
   border-radius: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
 .orbit-ring-inner {
-  inset: 26%;
+  width: calc(var(--ring) * 0.58);
+  height: calc(var(--ring) * 0.58);
   border-color: rgba(187, 154, 101, 0.2);
 }
 
 .orbit-core {
   position: absolute;
-  inset: 34%;
+  top: 50%;
+  left: 50%;
   z-index: 2;
   display: flex;
+  width: calc(var(--ring) * 0.4);
+  height: calc(var(--ring) * 0.4);
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -871,7 +886,8 @@ img {
   border: 1px solid var(--rule);
   box-shadow: 0 16px 40px rgba(10, 10, 10, 0.08);
   text-align: center;
-  padding: 1rem;
+  padding: 0.75rem;
+  transform: translate(-50%, -50%);
 }
 
 .orbit-track {
@@ -879,6 +895,7 @@ img {
   inset: 0;
   animation: orbitSpin 36s linear infinite;
   will-change: transform;
+  overflow: visible;
 }
 
 .orbit-stage.is-paused .orbit-track,
@@ -909,8 +926,8 @@ img {
   position: absolute;
   top: 0;
   left: 0;
-  width: 7.6rem;
-  padding: 0.85rem 0.7rem;
+  width: 7.25rem;
+  padding: 0.8rem 0.65rem;
   border-radius: 1rem;
   background: var(--white);
   border: 1px solid var(--rule);
@@ -934,7 +951,7 @@ img {
 .orbit-card-title {
   display: block;
   font-family: var(--font-space-grotesk), sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--heading);
   letter-spacing: -0.01em;
@@ -943,7 +960,7 @@ img {
 .orbit-card-text {
   display: block;
   margin-top: 0.25rem;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   line-height: 1.35;
   color: var(--muted);
 }
@@ -962,20 +979,28 @@ img {
 
 @media (min-width: 768px) {
   .orbit-stage {
-    --orbit-size: 560px;
+    --pad: 5.25rem;
+    --ring: 420px;
   }
 
   .orbit-card {
-    width: 8.5rem;
-    padding: 1rem 0.85rem;
+    width: 8.25rem;
+    padding: 0.95rem 0.8rem;
   }
 
   .orbit-card-title {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   .orbit-card-text {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .orbit-stage {
+    --pad: 5.75rem;
+    --ring: 440px;
   }
 }
 
