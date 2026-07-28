@@ -46,6 +46,12 @@ export function Reveal({
       return;
     }
 
+    // If already in view on mount (e.g. tall screens), show immediately
+    const rect = node.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      requestAnimationFrame(() => node.classList.add("is-visible"));
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -53,7 +59,7 @@ export function Reveal({
           observer.unobserve(node);
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -48px 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px -4% 0px" }
     );
 
     observer.observe(node);
@@ -65,6 +71,7 @@ export function Reveal({
       ref={ref as RefObject<HTMLDivElement>}
       className={`${variantClass[variant]} ${className}`}
       style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
+      data-no-scroll-animate=""
     >
       {children}
     </Tag>

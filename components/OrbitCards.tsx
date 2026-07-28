@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const ORBIT_CARDS = [
   {
@@ -39,17 +39,31 @@ const ORBIT_CARDS = [
 
 export function OrbitCards() {
   const ref = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (reduced) {
+      node.classList.add("is-paused");
+      node.classList.remove("is-active");
+      return;
+    }
+
+    // Drive pause/play via DOM classes — no React setState from IntersectionObserver.
+    node.classList.add("is-paused");
 
     const observer = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          node.classList.add("is-active");
+          node.classList.remove("is-paused");
+        } else {
+          node.classList.add("is-paused");
+          node.classList.remove("is-active");
+        }
+      },
       { threshold: 0.2 }
     );
 
@@ -61,7 +75,7 @@ export function OrbitCards() {
     <div className="orbit-wrap">
       <div
         ref={ref}
-        className={`orbit-stage ${active ? "is-active" : "is-paused"}`}
+        className="orbit-stage is-paused"
         aria-label="Niagra capabilities orbit"
       >
         <div className="orbit-ring" aria-hidden="true" />

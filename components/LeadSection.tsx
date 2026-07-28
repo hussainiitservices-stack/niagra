@@ -38,7 +38,7 @@ export function LeadSection({
               </Link>
             </p>
           </Reveal>
-          <Reveal delayMs={100} className="bg-white border border-rule rounded-3xl p-6 md:p-8 surface-card !transform-none hover:!translate-y-0">
+          <Reveal delayMs={100} className="bg-white border border-rule rounded-3xl p-6 md:p-8 surface-card !transform-none hover:!translate-y-0 mobile-form-panel">
             <QuoteForm
               source={source}
               defaultProjectType={defaultProjectType}

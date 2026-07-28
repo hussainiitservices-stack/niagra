@@ -23,7 +23,7 @@ import {
 export default function HomePage() {
   return (
     <>
-      <section className="relative min-h-[86vh] md:min-h-[92vh] overflow-hidden bg-ink">
+      <section className="relative overflow-hidden bg-ink mobile-hero md:min-h-[92vh]">
         <div className="absolute inset-0 hero-image-reveal">
           <Image
             src="/brand/banner2.webp"
@@ -34,7 +34,8 @@ export default function HomePage() {
             className="object-cover ken-burns opacity-55"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-ink/55" />
+          <div className="absolute inset-0 bg-ink/55 md:bg-ink/55" />
+          <div className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-ink via-ink/70 to-transparent md:hidden" />
         </div>
 
         <div
@@ -54,7 +55,13 @@ export default function HomePage() {
           aria-hidden="true"
         />
 
-        <div className="container-site relative z-10 flex min-h-[86vh] md:min-h-[92vh] flex-col justify-center py-24">
+        <div className="container-site relative z-10 flex flex-col justify-center py-24 mobile-hero-inner md:min-h-[92vh] md:justify-center md:py-24 md:pb-24">
+          <p
+            className="mobile-hero-brand hero-rise md:hidden"
+            style={{ animationDelay: "0.05s" }}
+          >
+            Niagra<span>.</span>
+          </p>
           <p
             className="eyebrow text-brass mb-4 hero-rise"
             style={{ animationDelay: "0.1s" }}
@@ -62,13 +69,13 @@ export default function HomePage() {
             <span className="eyebrow-line">Welcome to Niagra International Wood Industry LLC</span>
           </p>
           <h1
-            className="max-w-4xl font-display text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] text-white hero-rise"
+            className="max-w-4xl font-display text-[2.15rem] leading-[1.1] sm:text-5xl md:text-6xl lg:text-[4.5rem] text-white hero-rise"
             style={{ animationDelay: "0.28s" }}
           >
             <MorphText />
           </h1>
           <p
-            className="mt-6 max-w-xl text-base md:text-lg text-white/80 leading-relaxed hero-rise"
+            className="mt-5 max-w-xl text-[0.95rem] md:mt-6 md:text-lg text-white/80 leading-relaxed hero-rise"
             style={{ animationDelay: "0.48s" }}
           >
             Civil Defence approved wooden fire doors (30–120 min), acoustic sets, and
@@ -76,7 +83,7 @@ export default function HomePage() {
             and homes across the UAE.
           </p>
           <div
-            className="mt-10 flex flex-wrap gap-3 hero-rise"
+            className="mt-8 mobile-hero-ctas md:mt-10 md:flex md:flex-wrap md:gap-3 hero-rise"
             style={{ animationDelay: "0.65s" }}
           >
             <Link href="/contact-us#quote" className="btn btn-brass btn-shine">
@@ -87,7 +94,7 @@ export default function HomePage() {
             </a>
           </div>
           <div
-            className="mt-8 flex flex-wrap gap-2 hero-rise"
+            className="mt-6 flex flex-wrap gap-2 hero-rise md:mt-8"
             style={{ animationDelay: "0.8s" }}
           >
             <StampBadge label="Civil Defence" className="!text-brass !border-brass !bg-transparent" />
@@ -96,7 +103,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 hero-rise" style={{ animationDelay: "1s" }}>
+        <div className="mobile-hero-scroll absolute bottom-8 left-1/2 z-10 -translate-x-1/2 hero-rise md:block" style={{ animationDelay: "1s" }}>
           <div className="flex flex-col items-center gap-2 text-white/60">
             <span className="text-[0.65rem] uppercase tracking-[0.2em]">Scroll</span>
             <span className="block h-8 w-px bg-brass float-soft" />
@@ -106,16 +113,19 @@ export default function HomePage() {
 
       <section className="bg-brass shimmer relative overflow-hidden">
         <div className="container-site py-10 md:py-12">
-          <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <Reveal className="mobile-experience md:flex md:flex-row md:items-end md:justify-between md:gap-6">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-ink/70 font-semibold">
                 Experience
               </p>
-              <p className="font-display text-4xl md:text-6xl text-ink mt-1">
+              <p className="font-display text-ink mt-1 mobile-experience-number md:text-6xl">
                 <CountUp value={30} suffix="+" /> Years
               </p>
+              <p className="mt-3 text-sm text-ink/75 max-w-xs md:hidden">
+                Sharjah manufacturing · Civil Defence approved · UAE projects
+              </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 md:gap-3">
               <StampBadge label="Civil Defense" className="stamp-on-brass float-soft" />
               <StampBadge
                 label="Fire Rated"
@@ -168,7 +178,7 @@ export default function HomePage() {
         <div className="container-site py-16 md:py-24">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
             <Reveal variant="left">
-              <div className="img-zoom relative aspect-[4/5] bg-bone shadow-[0_24px_60px_rgba(64,50,38,0.12)]">
+              <div className="img-zoom relative aspect-[16/11] md:aspect-[4/5] bg-bone shadow-[0_24px_60px_rgba(64,50,38,0.12)]">
                 <Image
                   src="/brand/about.jpg"
                   alt="Niagra craftsmanship and joinery"
@@ -217,9 +227,15 @@ export default function HomePage() {
               className="mx-auto"
             />
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 mobile-snap mobile-snap-wide md:mt-12 md:grid md:gap-6 md:grid-cols-3 md:overflow-visible md:scroll-auto md:mx-0 md:px-0 md:flex-none">
             {services.map((service, i) => (
-              <Reveal key={service.href} delayMs={i * 120} variant="scale" as="article">
+              <Reveal
+                key={service.href}
+                delayMs={i * 120}
+                variant="scale"
+                as="article"
+                className="mobile-service-card md:flex-none"
+              >
                 <Link href={service.href} className="surface-card group block h-full">
                   <div className="img-zoom !rounded-none relative aspect-[4/5] bg-ink">
                     <Image
@@ -227,10 +243,10 @@ export default function HomePage() {
                       alt={service.imageAlt}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 78vw, 33vw"
                     />
                   </div>
-                  <div className="p-6">
+                  <div className="p-5 md:p-6">
                     <p className="eyebrow mb-2">Doors</p>
                     <h3 className="font-display text-xl text-heading group-hover:text-brass transition-colors duration-300">
                       {service.title}
@@ -263,14 +279,14 @@ export default function HomePage() {
               description="The same manufacturing standard — tailored to hospitality, healthcare, commercial, and residential programmes."
             />
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mobile-snap mobile-snap-tight md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-4 md:overflow-visible md:mx-0 md:px-0">
             {industries.map((item, i) => (
               <Reveal
                 key={item.title}
                 delayMs={i * 70}
-                className="rounded-2xl border border-rule bg-bone p-6 transition-all hover:border-brass hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(187,154,101,0.15)]"
+                className="rounded-2xl border border-rule bg-bone p-5 md:p-6 transition-all hover:border-brass hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(187,154,101,0.15)]"
               >
-                <p className="font-display text-xl text-heading">{item.title}</p>
+                <p className="font-display text-lg md:text-xl text-heading">{item.title}</p>
                 <p className="mt-2 text-sm text-muted">{item.text}</p>
               </Reveal>
             ))}
@@ -289,14 +305,14 @@ export default function HomePage() {
               className="mx-auto"
             />
           </Reveal>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 mobile-snap mobile-snap-tight md:mt-12 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-4 md:overflow-visible md:mx-0 md:px-0">
             {fireRatings.map((rating, i) => (
               <Reveal
                 key={rating.code}
                 delayMs={i * 70}
-                className="rounded-2xl border border-rule bg-white p-6 text-center transition-all hover:border-brass hover:-translate-y-1"
+                className="rounded-2xl border border-rule bg-white p-5 md:p-6 text-center transition-all hover:border-brass hover:-translate-y-1"
               >
-                <p className="font-display text-4xl text-brass">{rating.code}</p>
+                <p className="font-display text-3xl md:text-4xl text-brass">{rating.code}</p>
                 <p className="mt-2 text-sm font-semibold text-heading">
                   {rating.minutes} minutes
                 </p>
@@ -428,7 +444,7 @@ export default function HomePage() {
               View all
             </Link>
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 mobile-snap md:mt-12 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6 md:overflow-visible md:mx-0 md:px-0">
             {blogPosts.map((post, i) => (
               <Reveal key={post.slug} delayMs={i * 90} variant="up" as="article">
                 <Link href={`/blog/${post.slug}`} className="surface-card group block h-full">
@@ -438,7 +454,7 @@ export default function HomePage() {
                       alt=""
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 25vw"
+                      sizes="(max-width: 768px) 78vw, 25vw"
                     />
                   </div>
                   <div className="p-5">

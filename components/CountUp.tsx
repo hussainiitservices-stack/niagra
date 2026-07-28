@@ -25,34 +25,46 @@ export function CountUp({
     const node = ref.current;
     if (!node) return;
 
+    let alive = true;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
-      setCurrent(value);
-      setStarted(true);
-      return;
+      // Defer so we never update during Strict Mode remount placement.
+      const id = requestAnimationFrame(() => {
+        if (!alive) return;
+        setCurrent(value);
+        setStarted(true);
+      });
+      return () => {
+        alive = false;
+        cancelAnimationFrame(id);
+      };
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.unobserve(node);
-        }
+        if (!alive || !entry.isIntersecting) return;
+        setStarted(true);
+        observer.unobserve(node);
       },
       { threshold: 0.4 }
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      alive = false;
+      observer.disconnect();
+    };
   }, [value]);
 
   useEffect(() => {
     if (!started || display) return;
 
-    const start = performance.now();
+    let alive = true;
     let frame = 0;
+    const start = performance.now();
 
     const tick = (now: number) => {
+      if (!alive) return;
       const progress = Math.min((now - start) / durationMs, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setCurrent(Math.round(value * eased));
@@ -60,7 +72,10 @@ export function CountUp({
     };
 
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      alive = false;
+      cancelAnimationFrame(frame);
+    };
   }, [started, value, durationMs, display]);
 
   return (

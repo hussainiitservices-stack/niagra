@@ -3,25 +3,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
+
+function subscribeScroll(onStoreChange: () => void) {
+  window.addEventListener("scroll", onStoreChange, { passive: true });
+  return () => window.removeEventListener("scroll", onStoreChange);
+}
+
+function getScrolledSnapshot() {
+  return window.scrollY > 8;
+}
+
+function getScrolledServerSnapshot() {
+  return false;
+}
+
+function subscribeClientOnly() {
+  return () => {};
+}
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const prevPathname = useRef(pathname);
+  const mounted = useSyncExternalStore(subscribeClientOnly, () => true, () => false);
+  const scrolled = useSyncExternalStore(
+    subscribeScroll,
+    getScrolledSnapshot,
+    getScrolledServerSnapshot
+  );
 
   useEffect(() => {
-    setMounted(true);
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
+    if (prevPathname.current === pathname) return;
+    prevPathname.current = pathname;
     setOpen(false);
     setServicesOpen(false);
   }, [pathname]);
@@ -43,6 +59,7 @@ export function Header() {
           : "bg-white/95"
       }`}
     >
+      <div className="h-0.5 w-full bg-brass md:hidden" aria-hidden="true" />
       <div className="hidden md:block bg-heading text-white">
         <div className="container-site flex items-center justify-between gap-4 py-2 text-xs tracking-wide">
           <p className="text-white/80">
@@ -149,7 +166,7 @@ export function Header() {
           </Link>
           <button
             type="button"
-            className="xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-rule text-heading"
+            className="xl:hidden relative z-[60] inline-flex h-11 w-11 items-center justify-center rounded-full border border-rule text-heading"
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -177,34 +194,28 @@ export function Header() {
       </div>
 
       {open ? (
-        <div
-          id="mobile-nav"
-          className="xl:hidden border-t border-rule bg-white max-h-[calc(100dvh-5rem)] overflow-y-auto"
-        >
-          <nav className="container-site flex flex-col py-4" aria-label="Mobile">
+        <div id="mobile-nav" className="xl:hidden mobile-nav-sheet">
+          <nav className="container-site flex flex-col flex-1" aria-label="Mobile">
+            <p className="mobile-nav-label mb-4 text-brass text-xs uppercase tracking-[0.2em] font-semibold">
+              Menu
+            </p>
             {NAV_LINKS.map((item) =>
               "children" in item && item.children ? (
-                <div key={item.href} className="border-b border-rule">
+                <div key={item.href}>
                   <button
                     type="button"
-                    className="flex w-full items-center justify-between py-3.5 text-left text-base text-heading"
+                    className="mobile-nav-link"
                     onClick={() => setServicesOpen((v) => !v)}
                     aria-expanded={servicesOpen}
                   >
                     {item.label}
-                    <span className="text-muted text-sm">{servicesOpen ? "−" : "+"}</span>
+                    <span className="text-brass text-sm">{servicesOpen ? "−" : "+"}</span>
                   </button>
                   {servicesOpen ? (
-                    <div className="pb-3 pl-3 flex flex-col gap-1">
-                      <Link href={item.href} className="py-2 text-sm text-muted">
-                        Overview
-                      </Link>
+                    <div className="mobile-nav-sub pb-4 pl-1 flex flex-col">
+                      <Link href={item.href}>Overview</Link>
                       {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className="py-2 text-sm text-muted"
-                        >
+                        <Link key={child.href} href={child.href}>
                           {child.label}
                         </Link>
                       ))}
@@ -212,21 +223,25 @@ export function Header() {
                   ) : null}
                 </div>
               ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="border-b border-rule py-3.5 text-base text-heading"
-                >
+                <Link key={item.href} href={item.href} className="mobile-nav-link">
                   {item.label}
                 </Link>
               )
             )}
-            <Link href="/certificates" className="btn btn-primary mt-5 w-full">
-              Certificates
-            </Link>
-            <Link href="/contact-us#quote" className="btn btn-dark mt-3 w-full">
-              Get a Free Quote
-            </Link>
+            <div className="mt-auto pt-8 space-y-3 pb-4">
+              <a href={SITE.phoneHref} className="mobile-nav-phone block text-brass font-display text-lg">
+                {SITE.phone}
+              </a>
+              <Link href="/certificates" className="btn btn-brass w-full">
+                Certificates
+              </Link>
+              <Link
+                href="/contact-us#quote"
+                className="btn w-full btn-outline-light md:!bg-heading md:!text-white md:!border-heading"
+              >
+                Get a Free Quote
+              </Link>
+            </div>
           </nav>
         </div>
       ) : null}

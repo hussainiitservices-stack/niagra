@@ -94,6 +94,15 @@ export function Footer() {
                 </a>
               </li>
             </ul>
+            <div className="mobile-footer-cta md:hidden">
+              <p className="text-xs uppercase tracking-[0.16em] text-white/50 mb-2">
+                Talk to sales
+              </p>
+              <a href={SITE.phoneHref}>{SITE.phone}</a>
+              <Link href="/contact-us#quote" className="mt-2 !text-white">
+                Request a free quote →
+              </Link>
+            </div>
           </div>
         </div>
 
